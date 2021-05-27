@@ -1,0 +1,17 @@
+repositories:
+  - name: kubernetes-dashboard
+    url: https://kubernetes.github.io/dashboard/
+
+releases:
+  - name: kubernetes-dashboard
+    namespace: kubernetes-dashboard
+    createNamespace: true
+    chart: kubernetes-dashboard/kubernetes-dashboard
+    version: ^4.2.0
+    values:
+      - ingress:
+          enabled: true
+      - metricsScraper: 
+          enabled: true
+      - metrics-server:
+          enabled: true
