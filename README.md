@@ -1,6 +1,7 @@
 # Kubernetes Infrustructure Bootstrap
 
-It is default bootstrap temaplte for new k8s cluster.
+Defaults infrastructure services bootstrap for new k8s clusters.
+
 It define basic infrustructure services, which can be usefull for newly created cluster.
 You can fork this project for define your own infrsutructure bootstrap.
 Don't mix infrustructure and business services, this setup only define basic infrsutructure,
