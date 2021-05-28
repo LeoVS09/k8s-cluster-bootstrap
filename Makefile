@@ -1,6 +1,6 @@
 #!/usr/bin/env make
 
-.PHONY: sync dashboard proxy contexts current-context dashboard-proxy
+.PHONY: sync dashboard proxy contexts current-context dashboard-proxy minikube minikube-ingress minikube-ip
 
 default: sync
 
@@ -13,14 +13,26 @@ sync:
 	helmfile sync
 	make create-dashboard-role
 
-dashboard:
-	kubectl create -f https://raw.githubusercontent.com/kubernetes/dashboard/v2.2.0/aio/deploy/recommended.yaml
-	make create-dashboard-role
-
 create-dashboard-role:
 	kubectl delete clusterrolebinding kubernetes-dashboard
 	kubectl create clusterrolebinding kubernetes-dashboard \
 		--clusterrole=cluster-admin --serviceaccount=kubernetes-dashboard:kubernetes-dashboard
+
+# ---------------------------------------------------------------------------------------------------------------------
+# MINIKUBE
+# ---------------------------------------------------------------------------------------------------------------------
+
+minikube:
+	minikube start
+	make minikube-ingress
+
+# Allow access without proxy
+minikube-ingress:
+	minikube addons enable ingress
+
+# get the external IP of cluster
+minikube-ip:
+	minikube ip
 
 # ---------------------------------------------------------------------------------------------------------------------
 # USAGE
