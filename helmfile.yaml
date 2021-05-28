@@ -12,7 +12,7 @@ releases:
       - ingress:
           enabled: true
           hosts:
-            - k8s.local
+            - dashboard.k8s.local
       - metricsScraper: 
           enabled: true
       - metrics-server:

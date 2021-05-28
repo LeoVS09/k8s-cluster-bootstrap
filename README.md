@@ -50,7 +50,7 @@ make minikube-ip
 And add to `/etc/hosts` file next line
 
 ```
-<your-external-ip> k8s.local
+<your-external-ip> dashboard.k8s.local k8s.local
 ```
 
 ## For Access Kubernetes Dashboard
@@ -67,7 +67,7 @@ kubectl -n kubernetes-dashboard describe secret kubernetes-dashboard-token-<some
 
 ### Though Ingress
 
-open <https://k8s.local> and pass copied token
+open <https://dashboard.k8s.local> and pass copied token
 
 ### Through proxy
 
