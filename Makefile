@@ -1,6 +1,6 @@
 #!/usr/bin/env make
 
-.PHONY: sync dashboard proxy contexts current-context dashboard-proxy minikube minikube-ingress minikube-ip
+.PHONY: sync dashboard proxy contexts current-context dashboard-proxy local minikube minikube-ingress minikube-ip certificate-issuers
 
 default: sync
 
@@ -9,18 +9,21 @@ default: sync
 # SETUP
 # ---------------------------------------------------------------------------------------------------------------------
 
-sync:
+sync: 
 	helmfile sync
 	make create-dashboard-role
 
 create-dashboard-role:
-	kubectl delete clusterrolebinding kubernetes-dashboard
+	kubectl delete --ignore-not-found=true clusterrolebinding kubernetes-dashboard
 	kubectl create clusterrolebinding kubernetes-dashboard \
 		--clusterrole=cluster-admin --serviceaccount=kubernetes-dashboard:kubernetes-dashboard
 
 # ---------------------------------------------------------------------------------------------------------------------
 # MINIKUBE
 # ---------------------------------------------------------------------------------------------------------------------
+
+# Setup local cluster
+local: minikube sync
 
 minikube:
 	minikube start
@@ -33,6 +36,18 @@ minikube-ingress:
 # get the external IP of cluster
 minikube-ip:
 	minikube ip
+
+# ---------------------------------------------------------------------------------------------------------------------
+# CERTIFICATE MANAGER
+# ---------------------------------------------------------------------------------------------------------------------
+
+certificate-issuers: certificate-issuer-staging certificate-issuer-prod
+
+certificate-issuer-staging:
+	envsubst < ./certificate/staging-issuer.yaml | kubectl apply -f -
+
+certificate-issuer-prod:
+	envsubst < ./certificate/production-issuer.yaml | kubectl apply -f -
 
 # ---------------------------------------------------------------------------------------------------------------------
 # USAGE

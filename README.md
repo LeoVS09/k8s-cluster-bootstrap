@@ -1,23 +1,14 @@
 # Kubernetes Infrustructure Bootstrap
 
-Defaults infrastructure services bootstrap for new k8s clusters.
+Defaults services collection for production ready Kubernetes cluster.
 
-It define basic infrustructure services, which can be usefull for newly created cluster.
-You can fork this project for define your own infrsutructure bootstrap.
+This collection based on know enterprise wide services, already used by many companies.
+
+If you searching for base setup for your cluster, probably [Bitnami Kubernetes Production Runtime](https://github.com/bitnami/kube-prod-runtime) will be usefull to you. Bitnamic alredy accessable for GKE, AKS, and Amazon EKS. But goal of this bootstrap define vendor free bootstrap, which can be started in any type of cluster, not depend on cloud provider.
+
+You can fork this project for define your own infrsutructure bootstrap. Any PRs are allways welcome.
 Don't mix infrustructure and business services, this setup only define basic infrsutructure,
 for define business services better use GitOps soltuions, like [ArgoCD](https://argoproj.github.io/argo-cd/).
-
-## Requirements
-
-Create kubernetes cluster version `1.21.*`, newer version not working with kubernetes dashboard, update it in file if you using 1.22 or newer.
-configure [kubectl](https://kubernetes.io/docs/tasks/tools/) for connect to cluster.
-
-Install:
-
-* [Helm](https://helm.sh/) - The package manager for Kubernetes
-* [Hemlile](https://github.com/roboll/helmfile) - Deploy Kubernetes Helm Charts
-
-clone repository
 
 ## Services
 
@@ -25,23 +16,66 @@ Current setup contains:
 
 * [Kubernetes Dashboard](https://github.com/kubernetes/dashboard) - General-purpose web UI for Kubernetes clusters
 
+## Requirements
+
+Create kubernetes cluster version and configure [kubectl](https://kubernetes.io/docs/tasks/tools/) for connect to it.
+
+Install CLIs:
+
+* [Helm](https://helm.sh/) - The package manager for Kubernetes.
+* [Hemlile](https://github.com/roboll/helmfile) - One file for manage multiple heml charts.
+* [GNU Make](https://www.gnu.org/software/make/manual/make.html) - install by `sudo apt-get install build-essential`
+
 ## Usage
 
 For setup basic infrustructure run
 
 ```bash
-helmfile sync
+# Will deply services and link roles for them
+make sync
 ```
 
-### if you using minikube
+### Setup certificates
 
-Enable minikkube ingress before sync, by next command
+For use https you need setup sertificates, you can do it by next commands
 
 ```bash
-make minikube-ingress 
+# Will be used by lets encrypt for send emails about certificate updates
+export CERTIFICATE_EMAIL=user@email.com
+# Will create issuers (certificate providers)
+make certificate-issuers
 ```
 
-After that run sync, and get external ip
+if `make sync`  were made first time in cluster wait some time before setup certificates,
+k8s need time for load certificate manager operator
+
+More about [ceertificate configuration](https://cert-manager.io/docs/configuration/acme/)
+and [tutorial](https://cert-manager.io/docs/tutorials/acme/ingress/) for lets encrypt
+
+### Minikube
+
+For start local cluster and synchronise, just run
+
+```bash
+make local
+```
+
+It will run next commands, but you can run them by self:
+
+```bash
+# Start minikube server
+minikube start
+
+# Enable minikkube ingress before sync
+make minikube-ingress # or minikube addons enable ingress
+
+# for synchromise cluster
+make sync # or helmfile sync
+```
+
+---
+
+Get external ip, for access your cluster outside
 
 ```bash
 make minikube-ip
@@ -49,11 +83,12 @@ make minikube-ip
 
 And add to `/etc/hosts` file next line
 
-```
+```hosts
+# For access local cubernetes cluster
 <your-external-ip> dashboard.k8s.local k8s.local
 ```
 
-## For Access Kubernetes Dashboard
+## Access Kubernetes Dashboard
 
 get authentication token
 
