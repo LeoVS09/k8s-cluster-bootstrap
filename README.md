@@ -15,6 +15,8 @@ for define business services better use GitOps soltuions, like [ArgoCD](https://
 Current setup contains:
 
 * [Kubernetes Dashboard](https://github.com/kubernetes/dashboard) - General-purpose web UI for Kubernetes clusters
+* [Cert-Manager](https://github.com/jetstack/cert-manager) - Automatically provision and manage TLS certificates in Kubernetes
+* [kube-prometheus-stack](https://artifacthub.io/packages/helm/prometheus-community/kube-prometheus-stack) - kube-prometheus-stack collects Kubernetes manifests, Grafana dashboards, and Prometheus rules combined with documentation and scripts to provide easy to operate end-to-end Kubernetes cluster monitoring with Prometheus using the Prometheus Operator.
 
 ## Requirements
 
@@ -52,6 +54,8 @@ k8s need time for load certificate manager operator
 More about [ceertificate configuration](https://cert-manager.io/docs/configuration/acme/)
 and [tutorial](https://cert-manager.io/docs/tutorials/acme/ingress/) for lets encrypt
 
+**IMPORTANT:** If you not setup sertificates or setup them incorrectly, Ingresses will fallback to self-signed sertificates.
+
 ### Minikube
 
 For start local cluster and synchronise, just run
@@ -85,12 +89,12 @@ And add to `/etc/hosts` file next line
 
 ```hosts
 # For access local cubernetes cluster
-<your-external-ip> dashboard.k8s.local k8s.local
+<your-external-ip> dashboard.k8s.local prometheus.k8s.local thanos-gateway.k8s.local grafana.k8s.local alertmanager.k8s.local k8s.local
 ```
 
-## Access Kubernetes Dashboard
+## Kubernetes Dashboard
 
-get authentication token
+For access kubernets dashboard you need firstly get token:
 
 ```bash
 # list existing secrets
@@ -99,6 +103,8 @@ kubectl -n kubernetes-dashboard get secrets
 kubectl -n kubernetes-dashboard describe secret kubernetes-dashboard-token-<some-id>
 # copy token
 ```
+
+Then you can open page and pass token
 
 ### Though Ingress
 
@@ -114,3 +120,10 @@ kubectl proxy
 
 open <http://localhost:8001/api/v1/namespaces/kubernetes-dashboard/services/https:kubernetes-dashboard:https/proxy/>
 and pass copied token
+
+## Grafana for Promtheus cluster metrics
+
+You can open Grafana at `grafana.k8s.local`
+for login as admiin use username `admin` and password `prom-operator`
+
+Change password in `helfile.yaml` in `kube-prometheus-stack` grafana section.
