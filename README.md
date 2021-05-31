@@ -18,6 +18,7 @@ Current setup contains:
 * [Cert-Manager](https://github.com/jetstack/cert-manager) - Automatically provision and manage TLS certificates in Kubernetes
 * [kube-prometheus-stack](https://artifacthub.io/packages/helm/prometheus-community/kube-prometheus-stack) - kube-prometheus-stack collects Kubernetes manifests, Grafana dashboards, and Prometheus rules combined with documentation and scripts to provide easy to operate end-to-end Kubernetes cluster monitoring with Prometheus using the Prometheus Operator.
 * [loki-stack](https://artifacthub.io/packages/helm/grafana/loki-stack) - Loki: like Prometheus, but for logs
+* [tempo-distributed](https://artifacthub.io/packages/helm/grafana/tempo-distributed) - Grafana Tempo in MicroService mode
 
 ## Requirements
 
@@ -127,15 +128,22 @@ and pass copied token
 **In general this is self containing solution, which must just work out of the box.**
 
 For metrics collection used [Prometheus](https://prometheus.io/).
-For Logs collection [Promtail](https://grafana.com/docs/loki/latest/clients/promtail/) and [Loki](https://grafana.com/oss/loki/).
+For togs collection [Promtail](https://grafana.com/docs/loki/latest/clients/promtail/) and [Loki](https://grafana.com/oss/loki/).
+For traing collection used [Tempo](https://grafana.com/oss/tempo/).
 For dashboard used [Grafana](https://grafana.com/grafana/).
 
 In future release I would like to migrate all what possible to cloud IaaS solutions.
 
 ### Why not ELK stack?
 
-You can find comparisions from Grafana guys [there](https://grafana.com/docs/loki/latest/overview/comparisons/). In simple words, Loki + Prometheus + Grafana is simpler to setup then ELK, but it have some limitations.
+You can find comparisions from Grafana guys [there](https://grafana.com/docs/loki/latest/overview/comparisons/). In simple words, Loki + Prometheus + Tempo + Grafana is simpler to setup then ELK, but it have some limitations.
 I actually love Kibana, and have plans to add it.
+
+### Why not OpenTelemetry?
+
+I love [OpenTelemetry](https://opentelemetry.io/) idea of vendor agnostic fully containing stack, but it not ready for most of languages (in alpha or beta stages) right now. I would like to swith to OpenTelemetry when it will be ready for production.
+
+Acording to their [roadmap](https://opentelemetry.io/status/) I've expecting to add OpenTelemetry in 2022, when they will add logs component support.
 
 ## Acesss Grafana
 
@@ -146,4 +154,8 @@ Change password in `helfile.yaml` in `kube-prometheus-stack` grafana section.
 
 ### Access Logs
 
-Open explore tab in Grafana, abd swith Prometheus to Loki. on Log browser you can see posible valuues to search.
+Open explore tab in Grafana, abd swith Prometheus to Loki. On log browser you can see posible valuues to search.
+
+### Access Traces
+
+Open explore tab in Grafana, abd swith Prometheus to Tempo.

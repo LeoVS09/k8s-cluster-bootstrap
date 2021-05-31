@@ -95,3 +95,9 @@ releases:
           enabled: true
       - fluent-bit:
           enabled: false
+
+  - name: tempo
+    namespace: monitoring-logs-trace-stack
+    createNamespace: true
+    chart: grafana/tempo-distributed
+    version: ^0.9.6
