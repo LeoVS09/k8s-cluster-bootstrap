@@ -17,6 +17,7 @@ Current setup contains:
 * [Kubernetes Dashboard](https://github.com/kubernetes/dashboard) - General-purpose web UI for Kubernetes clusters
 * [Cert-Manager](https://github.com/jetstack/cert-manager) - Automatically provision and manage TLS certificates in Kubernetes
 * [kube-prometheus-stack](https://artifacthub.io/packages/helm/prometheus-community/kube-prometheus-stack) - kube-prometheus-stack collects Kubernetes manifests, Grafana dashboards, and Prometheus rules combined with documentation and scripts to provide easy to operate end-to-end Kubernetes cluster monitoring with Prometheus using the Prometheus Operator.
+* [loki-stack](https://artifacthub.io/packages/helm/grafana/loki-stack) - Loki: like Prometheus, but for logs
 
 ## Requirements
 
@@ -92,7 +93,7 @@ And add to `/etc/hosts` file next line
 <your-external-ip> dashboard.k8s.local prometheus.k8s.local thanos-gateway.k8s.local grafana.k8s.local alertmanager.k8s.local k8s.local
 ```
 
-## Kubernetes Dashboard
+## Access Kubernetes Dashboard
 
 For access kubernets dashboard you need firstly get token:
 
@@ -121,9 +122,28 @@ kubectl proxy
 open <http://localhost:8001/api/v1/namespaces/kubernetes-dashboard/services/https:kubernetes-dashboard:https/proxy/>
 and pass copied token
 
-## Grafana for Promtheus cluster metrics
+## Metrics, Logs, Tracing
+
+**In general this is self containing solution, which must just work out of the box.**
+
+For metrics collection used [Prometheus](https://prometheus.io/).
+For Logs collection [Promtail](https://grafana.com/docs/loki/latest/clients/promtail/) and [Loki](https://grafana.com/oss/loki/).
+For dashboard used [Grafana](https://grafana.com/grafana/).
+
+In future release I would like to migrate all what possible to cloud IaaS solutions.
+
+### Why not ELK stack?
+
+You can find comparisions from Grafana guys [there](https://grafana.com/docs/loki/latest/overview/comparisons/). In simple words, Loki + Prometheus + Grafana is simpler to setup then ELK, but it have some limitations.
+I actually love Kibana, and have plans to add it.
+
+## Acesss Grafana
 
 You can open Grafana at `grafana.k8s.local`
 for login as admiin use username `admin` and password `prom-operator`
 
 Change password in `helfile.yaml` in `kube-prometheus-stack` grafana section.
+
+### Access Logs
+
+Open explore tab in Grafana, abd swith Prometheus to Loki. on Log browser you can see posible valuues to search.

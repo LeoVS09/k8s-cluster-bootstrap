@@ -5,6 +5,8 @@ repositories:
     url: https://charts.jetstack.io
   - name: prometheus-community
     url: https://prometheus-community.github.io/helm-charts
+  - name: grafana 
+    url: https://grafana.github.io/helm-charts
 
 releases:
   # https://cert-manager.io/docs/installation/kubernetes/#installing-with-helm
@@ -43,7 +45,7 @@ releases:
 
   # https://artifacthub.io/packages/helm/prometheus-community/kube-prometheus-stack
   - name: kube-prometheus-stack
-    namespace: kube-prometheus-stack
+    namespace: monitoring-logs-trace-stack
     createNamespace: true
     chart: prometheus-community/kube-prometheus-stack
     version: ^16.1.2
@@ -81,3 +83,15 @@ releases:
               - hosts:
                 - grafana.k8s.local
                 secretName: grafana-general-tls
+  
+  # https://artifacthub.io/packages/helm/grafana/loki-stack
+  - name: loki
+    namespace: monitoring-logs-trace-stack
+    createNamespace: true
+    chart: grafana/loki-stack
+    version: ^2.4.1
+    values:
+      - promtail:
+          enabled: true
+      - fluent-bit:
+          enabled: false
