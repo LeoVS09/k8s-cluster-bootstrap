@@ -159,3 +159,10 @@ Open explore tab in Grafana, abd swith Prometheus to Loki. On log browser you ca
 ### Access Traces
 
 Open explore tab in Grafana, abd swith Prometheus to Tempo.
+
+If Tempo not connected probably you need enable Tempo.
+
+#### Enable Tempo
+
+Open Configuration.DataSourses page in Grafana -> click Add data sourses -> click Tempo ->
+fill URL with `http://tempo-tempo-distributed-query-frontend:3100` and set Trace to Logs section with Data Source `Loki`
