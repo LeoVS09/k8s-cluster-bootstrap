@@ -28,15 +28,25 @@ Create kubernetes cluster version and configure [kubectl](https://kubernetes.io/
 Install CLIs:
 
 * [Helm](https://helm.sh/) - The package manager for Kubernetes.
+* [Helm Diff](https://github.com/databus23/helm-diff) - A helm plugin that shows a diff explaining what a helm upgrade would change
 * [Hemlile](https://github.com/roboll/helmfile) - One file for manage multiple heml charts.
 * [GNU Make](https://www.gnu.org/software/make/manual/make.html) - install by `sudo apt-get install build-essential`
+
+## First Start Guide
+
+`helmfile` uses enviroment variables for set parametors of charts.
+`Makefile` automatically setup values from `.env` file.
+
+1) Copy `.env.example` and name it as `.env`
+2) Change variables in `.env` as you want.
+3) Run `make sync`
 
 ## Usage
 
 For setup basic infrustructure run
 
 ```bash
-# Will deply services and link roles for them
+# Will deploy new or changed charts
 make sync
 ```
 

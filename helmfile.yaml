@@ -30,15 +30,12 @@ releases:
       - ingress:
           enabled: true
           hosts:
-            - dashboard.k8s.local
+            - {{ env "K8S_DASHBOARD_HOST" | default "dashboard.k8s.local" }} 
           annotations:
-            # will use stagging issuer for test configuration
-            # change to letsencrypt-prod if sure all working correctly
-            # lets encrypt can ban production config if you using it for experiments
-            cert-manager.io/cluster-issuer: "letsencrypt-staging" 
+            cert-manager.io/cluster-issuer: {{ env "SERTIFICATE_ISSUER" | default "letsencrypt-staging" }}
           tls:
             - hosts:
-              - dashboard.k8s.local
+              - {{ env "K8S_DASHBOARD_HOST" | default "dashboard.k8s.local" }} 
               secretName: kubernetes-dashboard-tls
       - metricsScraper: 
           enabled: true
@@ -63,12 +60,12 @@ releases:
             enabled: false
             ingressClassName: nginx
             hosts:
-              - alertmanager.k8s.local
+              - {{ env "ALERT_MANAGER_HOST" | default "alertmanager.k8s.local" }}
             annotations:
-              cert-manager.io/cluster-issuer: "letsencrypt-staging"
+              cert-manager.io/cluster-issuer: {{ env "SERTIFICATE_ISSUER" | default "letsencrypt-staging" }}
             tls:
               - hosts:
-                - alertmanager.k8s.local
+                - {{ env "ALERT_MANAGER_HOST" | default "alertmanager.k8s.local" }}
                 secretName: alertmanager-general-tls
       # https://github.com/grafana/helm-charts/blob/main/charts/grafana/values.yaml
       - grafana:
@@ -78,12 +75,12 @@ releases:
             enabled: true
             annotations:
               kubernetes.io/ingress.class: nginx
-              cert-manager.io/cluster-issuer: "letsencrypt-staging"
+              cert-manager.io/cluster-issuer: {{ env "SERTIFICATE_ISSUER" | default "letsencrypt-staging" }}
             hosts:
-                - grafana.k8s.local
+                - {{ env "GRAFANA_HOST" | default "grafana.k8s.local" }}
             tls:
               - hosts:
-                - grafana.k8s.local
+                - {{ env "GRAFANA_HOST" | default "grafana.k8s.local" }}
                 secretName: grafana-general-tls
   
   # https://artifacthub.io/packages/helm/grafana/loki-stack
@@ -95,15 +92,17 @@ releases:
     values:
       - promtail:
           enabled: true
-      - fluent-bit:
+      - fluent-bit: # can work faster, but plugin for loki not support pod labels
           enabled: false
 
+  # https://artifacthub.io/packages/helm/grafana/tempo-distributed
   - name: tempo
     namespace: monitoring-logs-trace-stack
     createNamespace: true
     chart: grafana/tempo-distributed
     version: ^0.9.6
 
+  # https://artifacthub.io/packages/helm/argo/argo-cd
   - name: argocd
     namespace: argocd
     createNamespace: true
@@ -119,11 +118,13 @@ releases:
             ingressClassName: nginx
             https: true
             annotations:
-              cert-manager.io/cluster-issuer: "letsencrypt-staging"
+              cert-manager.io/cluster-issuer: {{ env "SERTIFICATE_ISSUER" | default "letsencrypt-staging" }}
             hosts:
-              - argo.k8s.local
+              - {{ env "ARGO_HOST" | default "argo.k8s.local" }}
             tls:
               - hosts:
-                - argo.k8s.local
+                - {{ env "ARGO_HOST" | default "argo.k8s.local" }}
                 secretName: argo-general-tls
-      - configs.secret.githubSecret: ""
+      - configs.secret.githubSecret: {{ env "ARGO_GITHUB_SECRET" | default "" }}
+      - configs.secret.bitbucketSecret: {{ env "ARGO_BITBUCKET_SECRET" | default "" }}
+      - configs.secret.gitlabSecret: {{ env "ARGO_GITLAB_SECRET" | default "" }}

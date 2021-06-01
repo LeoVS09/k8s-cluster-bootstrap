@@ -4,13 +4,18 @@
 
 default: sync
 
+# Apply .env if it exists
+ifneq (,$(wildcard ./.env))
+    include .env
+    export
+endif
 
 # ---------------------------------------------------------------------------------------------------------------------
 # SETUP
 # ---------------------------------------------------------------------------------------------------------------------
 
 sync: 
-	helmfile sync
+	helmfile apply
 	make create-dashboard-role
 	make apps
 
