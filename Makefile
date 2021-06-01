@@ -12,6 +12,7 @@ default: sync
 sync: 
 	helmfile sync
 	make create-dashboard-role
+	make apps
 
 create-dashboard-role:
 	kubectl delete --ignore-not-found=true clusterrolebinding kubernetes-dashboard
