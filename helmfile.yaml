@@ -7,6 +7,8 @@ repositories:
     url: https://prometheus-community.github.io/helm-charts
   - name: grafana 
     url: https://grafana.github.io/helm-charts
+  - name: argo
+    url: https://argoproj.github.io/argo-helm
 
 releases:
   # https://cert-manager.io/docs/installation/kubernetes/#installing-with-helm
@@ -101,3 +103,27 @@ releases:
     createNamespace: true
     chart: grafana/tempo-distributed
     version: ^0.9.6
+
+  - name: argocd
+    namespace: argocd
+    createNamespace: true
+    chart: argo/argo-cd
+    version: ^3.6.5
+    values:
+      - installCRDs: false # for Helm 3 compitability
+      - server:
+          extraArgs:
+            - --insecure # fix for https://github.com/argoproj/argo-cd/issues/2953
+          ingress:
+            enabled: true
+            ingressClassName: nginx
+            https: true
+            annotations:
+              cert-manager.io/cluster-issuer: "letsencrypt-staging"
+            hosts:
+              - argo.k8s.local
+            tls:
+              - hosts:
+                - argo.k8s.local
+                secretName: argo-general-tls
+      - configs.secret.githubSecret: ""

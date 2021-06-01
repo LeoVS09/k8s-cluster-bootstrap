@@ -1,6 +1,6 @@
 #!/usr/bin/env make
 
-.PHONY: sync dashboard proxy contexts current-context dashboard-proxy local minikube minikube-ingress minikube-ip certificate-issuers
+.PHONY: sync apps proxy contexts current-context dashboard-proxy local minikube minikube-ingress minikube-ip certificate-issuers
 
 default: sync
 
@@ -17,6 +17,9 @@ create-dashboard-role:
 	kubectl delete --ignore-not-found=true clusterrolebinding kubernetes-dashboard
 	kubectl create clusterrolebinding kubernetes-dashboard \
 		--clusterrole=cluster-admin --serviceaccount=kubernetes-dashboard:kubernetes-dashboard
+
+apps:
+	kubectl apply -n argocd -f ./applications/
 
 # ---------------------------------------------------------------------------------------------------------------------
 # MINIKUBE

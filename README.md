@@ -8,7 +8,7 @@ If you searching for base setup for your cluster, probably [Bitnami Kubernetes P
 
 You can fork this project for define your own infrsutructure bootstrap. Any PRs are allways welcome.
 Don't mix infrustructure and business services, this setup only define basic infrsutructure,
-for define business services better use GitOps soltuions, like [ArgoCD](https://argoproj.github.io/argo-cd/).
+for define business services better use GitOps soltuions, like [ArgoCD](https://argoproj.github.io/argo-cd/) which already build it in this bootstrap.
 
 ## Services
 
@@ -19,6 +19,7 @@ Current setup contains:
 * [kube-prometheus-stack](https://artifacthub.io/packages/helm/prometheus-community/kube-prometheus-stack) - kube-prometheus-stack collects Kubernetes manifests, Grafana dashboards, and Prometheus rules combined with documentation and scripts to provide easy to operate end-to-end Kubernetes cluster monitoring with Prometheus using the Prometheus Operator.
 * [loki-stack](https://artifacthub.io/packages/helm/grafana/loki-stack) - Loki: like Prometheus, but for logs
 * [tempo-distributed](https://artifacthub.io/packages/helm/grafana/tempo-distributed) - Grafana Tempo in MicroService mode
+* [argo-cd](https://artifacthub.io/packages/helm/argo/argo-cd) - Declarative continuous deployment for Kubernetes, GitOps implementation.
 
 ## Requirements
 
@@ -91,7 +92,7 @@ And add to `/etc/hosts` file next line
 
 ```hosts
 # For access local cubernetes cluster
-<your-external-ip> dashboard.k8s.local prometheus.k8s.local thanos-gateway.k8s.local grafana.k8s.local alertmanager.k8s.local k8s.local
+<your-external-ip> argo.k8s.local dashboard.k8s.local prometheus.k8s.local thanos-gateway.k8s.local grafana.k8s.local alertmanager.k8s.local k8s.local
 ```
 
 ## Access Kubernetes Dashboard
@@ -166,3 +167,33 @@ If Tempo not connected probably you need enable Tempo.
 
 Open Configuration.DataSourses page in Grafana -> click Add data sourses -> click Tempo ->
 fill URL with `http://tempo-tempo-distributed-query-frontend:3100` and set Trace to Logs section with Data Source `Loki`
+
+## Access ArgoCD
+
+Get password to admin account
+
+```bash
+kubectl -n argocd get secret argocd-initial-admin-secret -o jsonpath="{.data.password}" | base64 -d && echo
+# copy password
+```
+
+open <https://argo.k8s.local> and use `admin` as username
+
+### Create Application
+
+You can easily [create application through:
+
+* [UI application](https://argo-cd.readthedocs.io/en/stable/getting_started/#creating-apps-via-ui)
+* [CLI](https://argo-cd.readthedocs.io/en/stable/getting_started/#creating-apps-via-cli).
+* [Declarative setup](https://argoproj.github.io/argo-cd/operator-manual/declarative-setup/), which used in this repo.
+
+### Declarative application setup
+
+For deploy [applications](https://argoproj.github.io/argo-cd/operator-manual/declarative-setup/#applications) from `applications` folder just run.
+
+```bash
+make apps # Will deploy application configurations
+```
+
+For add new applications just add new `yaml` in `applications` folder.
+You also can use this foler for setup [Project](https://argoproj.github.io/argo-cd/operator-manual/declarative-setup/#projects), or [repository](https://argoproj.github.io/argo-cd/operator-manual/declarative-setup/#repositories), or [app of apps](https://argoproj.github.io/argo-cd/operator-manual/declarative-setup/#app-of-apps).
