@@ -9,7 +9,7 @@ spec:
   # For additional fields see https://argoproj.github.io/argo-cd/operator-manual/application.yaml
   project: default
   source:
-    repoURL: https://github.com/argoproj/argocd-example-apps.git
+    repoURL: https://github.com/kubernetes/examples.git # also https://github.com/argoproj/argocd-example-apps.git
     targetRevision: HEAD
     path: guestbook
   destination:

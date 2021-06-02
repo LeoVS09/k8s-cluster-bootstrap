@@ -205,5 +205,16 @@ For deploy [applications](https://argoproj.github.io/argo-cd/operator-manual/dec
 make apps # Will deploy application configurations
 ```
 
-For add new applications just add new `yaml` in `applications` folder.
+For add new applications just add new `yaml` in `applications` folder, like example application.
 You also can use this foler for setup [Project](https://argoproj.github.io/argo-cd/operator-manual/declarative-setup/#projects), or [repository](https://argoproj.github.io/argo-cd/operator-manual/declarative-setup/#repositories), or [app of apps](https://argoproj.github.io/argo-cd/operator-manual/declarative-setup/#app-of-apps).
+
+### Access deployed application
+
+You can access already deployed application thourgh port-forwarding, just run:
+
+```bash
+kubectl port-forward service/frontend :80
+# will choose local port and proxy it to service with name frontend (example application)
+```
+
+and you can open page localy as `http://localhost:<allocated-port>`
