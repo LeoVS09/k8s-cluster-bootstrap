@@ -1,14 +1,21 @@
 # Kubernetes Infrustructure Bootstrap
 
-Defaults services collection for production ready Kubernetes cluster.
+Base services collection for production ready Kubernetes cluster.
 
 This collection based on know enterprise wide services, already used by many companies.
+Bootstrap contain base GitOps setup and examples for add new applications.
 
-If you searching for base setup for your cluster, probably [Bitnami Kubernetes Production Runtime](https://github.com/bitnami/kube-prod-runtime) will be usefull to you. Bitnamic alredy accessable for GKE, AKS, and Amazon EKS. But goal of this bootstrap define vendor free bootstrap, which can be started in any type of cluster, not depend on cloud provider.
+## Target
+
+Goal of this bootstrap define vendor free bootstrap, which can be started in any type of cluster, not depend on cloud provider.
+
+But if it not problem for you, you can use [Bitnami Kubernetes Production Runtime](https://github.com/bitnami/kube-prod-runtime). BKPR alredy accessable for GKE, AKS, and Amazon EKS.
 
 You can fork this project for define your own infrsutructure bootstrap. Any PRs are allways welcome.
-Don't mix infrustructure and business services, this setup only define basic infrsutructure,
-for define business services better use GitOps soltuions, like [ArgoCD](https://argoproj.github.io/argo-cd/) which already build it in this bootstrap.
+
+**Advice:** Don't mix infrustructure and business services, this setup only define infrsutructure,
+for define business services better use GitOps soltuions, like [ArgoCD](https://argoproj.github.io/argo-cd/),
+which already build it in this bootstrap.
 
 ## Services
 
