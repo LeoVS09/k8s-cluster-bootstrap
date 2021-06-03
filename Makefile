@@ -1,6 +1,6 @@
 #!/usr/bin/env make
 
-.PHONY: sync apps proxy contexts current-context dashboard-proxy local minikube minikube-ingress minikube-ip certificate-issuers
+.PHONY: setup sync apps proxy contexts current-context dashboard-proxy local minikube minikube-ingress minikube-ip certificate-issuers
 
 default: sync
 
@@ -13,6 +13,12 @@ endif
 # ---------------------------------------------------------------------------------------------------------------------
 # SETUP
 # ---------------------------------------------------------------------------------------------------------------------
+
+# run on first setup
+setup:
+	helmfile sync
+	make create-dashboard-role
+	make apps
 
 sync: 
 	helmfile apply

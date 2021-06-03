@@ -39,7 +39,7 @@ Install CLIs:
 
 1) Copy `.env.example` and name it as `.env`
 2) Change variables in `.env` as you want.
-3) Run `make sync`
+3) Run `make setup` - will upload all services without check on changes.
 
 ## Usage
 
