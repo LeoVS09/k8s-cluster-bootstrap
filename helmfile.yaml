@@ -9,6 +9,8 @@ repositories:
     url: https://grafana.github.io/helm-charts
   - name: argo
     url: https://argoproj.github.io/argo-helm
+  - name: ingress-nginx
+    url: https://kubernetes.github.io/ingress-nginx
 
 releases:
   # https://cert-manager.io/docs/installation/kubernetes/#installing-with-helm
@@ -19,6 +21,11 @@ releases:
     version: ^1.3.1
     values:
       - installCRDs: true
+
+  # https://artifacthub.io/packages/helm/ingress-nginx/ingress-nginx
+  - name: ingress-nginx
+    chart: ingress-nginx/ingress-nginx
+    version: ^3.32.0
 
   # https://artifacthub.io/packages/helm/k8s-dashboard/kubernetes-dashboard
   - name: kubernetes-dashboard
@@ -32,6 +39,7 @@ releases:
           hosts:
             - {{ env "K8S_DASHBOARD_HOST" | default "dashboard.k8s.local" }} 
           annotations:
+            kubernetes.io/ingress.class: nginx
             cert-manager.io/cluster-issuer: {{ env "SERTIFICATE_ISSUER" | default "letsencrypt-staging" }}
           tls:
             - hosts:
@@ -62,6 +70,7 @@ releases:
             hosts:
               - {{ env "ALERT_MANAGER_HOST" | default "alertmanager.k8s.local" }}
             annotations:
+              kubernetes.io/ingress.class: nginx
               cert-manager.io/cluster-issuer: {{ env "SERTIFICATE_ISSUER" | default "letsencrypt-staging" }}
             tls:
               - hosts:
@@ -70,7 +79,7 @@ releases:
       # https://github.com/grafana/helm-charts/blob/main/charts/grafana/values.yaml
       - grafana:
           enabled: true
-          adminPassword: prom-operator
+          adminPassword: {{ env "GRAFANA_PASSSWORD" | default "prom-operator" }} 
           ingress:
             enabled: true
             annotations:
@@ -118,6 +127,7 @@ releases:
             ingressClassName: nginx
             https: true
             annotations:
+              kubernetes.io/ingress.class: nginx
               cert-manager.io/cluster-issuer: {{ env "SERTIFICATE_ISSUER" | default "letsencrypt-staging" }}
             hosts:
               - {{ env "ARGO_HOST" | default "argo.k8s.local" }}
