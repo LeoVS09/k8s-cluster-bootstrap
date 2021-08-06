@@ -53,7 +53,13 @@ Install CLIs:
 For setup basic infrustructure run
 
 ```bash
-# Will deploy new or changed charts
+# Will deploy new or changed charts first time
+make setup
+```
+
+For update only changed charts run
+
+```bash
 make sync
 ```
 
@@ -94,7 +100,7 @@ minikube start
 make minikube-ingress # or minikube addons enable ingress
 
 # for synchromise cluster
-make sync # or helmfile sync
+make setup # or helmfile sync
 ```
 
 ---

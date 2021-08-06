@@ -23,16 +23,17 @@ releases:
       - installCRDs: true
 
   # https://artifacthub.io/packages/helm/ingress-nginx/ingress-nginx
-  - name: ingress-nginx
-    chart: ingress-nginx/ingress-nginx
-    version: ^3.32.0
+  # Uncomment if your cluster not have ingress-nginx by default
+  # - name: ingress-nginx
+  #   chart: ingress-nginx/ingress-nginx
+  #   version: ^3.35.0
 
   # https://artifacthub.io/packages/helm/k8s-dashboard/kubernetes-dashboard
   - name: kubernetes-dashboard
     namespace: kubernetes-dashboard
     createNamespace: true
     chart: kubernetes-dashboard/kubernetes-dashboard
-    version: ^4.2.0
+    version: ^4.5.0
     values:
       - ingress:
           enabled: true
@@ -55,7 +56,7 @@ releases:
     namespace: monitoring-logs-trace-stack
     createNamespace: true
     chart: prometheus-community/kube-prometheus-stack
-    version: ^16.1.2
+    version: ^17.1.1
     values:
       # https://github.com/prometheus-community/helm-charts/blob/main/charts/alertmanager/values.yaml
       - alertmanager:
@@ -116,7 +117,7 @@ releases:
     namespace: argocd
     createNamespace: true
     chart: argo/argo-cd
-    version: ^3.6.5
+    version: ^3.11.1
     values:
       - installCRDs: false # for Helm 3 compitability
       - server:

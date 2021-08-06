@@ -38,10 +38,10 @@ apps:
 # ---------------------------------------------------------------------------------------------------------------------
 
 # Setup local cluster
-local: minikube sync
+local: minikube setup
 
 minikube:
-	minikube start
+	minikube start --addons=ingress
 	make minikube-ingress
 
 # Allow access without proxy
