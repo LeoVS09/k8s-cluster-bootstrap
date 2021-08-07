@@ -1,6 +1,6 @@
 #!/usr/bin/env make
 
-.PHONY: setup sync apps proxy contexts current-context dashboard-proxy local minikube minikube-ingress minikube-ip certificate-issuers
+.PHONY: setup sync apps proxy contexts current-context dashboard-proxy local minikube minikube-ingress minikube-ip certificate-issuers kubeless
 
 default: sync
 
@@ -32,6 +32,10 @@ create-dashboard-role:
 
 apps:
 	kubectl apply -n argocd -f ./applications/
+
+kubeless:
+	kubectl create ns kubeless
+	kubectl create -f ./kubeless/kubeless-v1.0.8.yaml
 
 # ---------------------------------------------------------------------------------------------------------------------
 # MINIKUBE
