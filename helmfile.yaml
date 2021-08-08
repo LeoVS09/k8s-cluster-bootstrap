@@ -128,7 +128,6 @@ releases:
             ingressClassName: nginx
             https: true
             annotations:
-              kubernetes.io/ingress.class: nginx
               cert-manager.io/cluster-issuer: {{ env "SERTIFICATE_ISSUER" | default "letsencrypt-staging" }}
             hosts:
               - {{ env "ARGO_HOST" | default "argo.k8s.local" }}
