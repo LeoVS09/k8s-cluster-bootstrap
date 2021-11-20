@@ -27,7 +27,6 @@ apply-base:
 	make create-dashboard-role
 	make save-stackgres-profiles
 	make save-wasabi-creds
-	make apps
 
 # if kubernetes dashboard cannot list something
 update-admin-role:

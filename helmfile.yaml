@@ -24,9 +24,9 @@ releases:
 
   # https://artifacthub.io/packages/helm/ingress-nginx/ingress-nginx
   # Uncomment if your cluster not have ingress-nginx by default
-  # - name: ingress-nginx
-  #   chart: ingress-nginx/ingress-nginx
-  #   version: ^3.35.0
+  - name: ingress-nginx
+    chart: ingress-nginx/ingress-nginx
+    version: ^3.35.0
 
   # https://artifacthub.io/packages/helm/k8s-dashboard/kubernetes-dashboard
   - name: kubernetes-dashboard
@@ -36,7 +36,7 @@ releases:
     version: ^4.5.0
     values:
       - ingress:
-          enabled: true
+          enabled: false
           hosts:
             - {{ env "K8S_DASHBOARD_HOST" | default "dashboard.k8s.local" }} 
           annotations:
@@ -82,7 +82,7 @@ releases:
           enabled: true
           adminPassword: {{ env "GRAFANA_PASSSWORD" | default "prom-operator" }} 
           ingress:
-            enabled: true
+            enabled: false
             annotations:
               kubernetes.io/ingress.class: nginx
               cert-manager.io/cluster-issuer: {{ env "SERTIFICATE_ISSUER" | default "letsencrypt-staging" }}
@@ -124,7 +124,7 @@ releases:
           extraArgs:
             - --insecure # fix for https://github.com/argoproj/argo-cd/issues/2953
           ingress:
-            enabled: true
+            enabled: false
             ingressClassName: nginx
             https: true
             annotations:
