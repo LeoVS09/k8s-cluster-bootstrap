@@ -11,6 +11,8 @@ repositories:
     url: https://argoproj.github.io/argo-helm
   - name: ingress-nginx
     url: https://kubernetes.github.io/ingress-nginx
+  - name: datawire 
+    url: https://app.getambassador.io
 
 releases:
   # https://cert-manager.io/docs/installation/kubernetes/#installing-with-helm
@@ -22,12 +24,13 @@ releases:
     values:
       - installCRDs: true
 
-  # https://artifacthub.io/packages/helm/ingress-nginx/ingress-nginx
-  # Uncomment if your cluster not have ingress-nginx by default
-  # - name: ingress-nginx
-  #   chart: ingress-nginx/ingress-nginx
-  #   version: ^3.35.0
-
+  # https://artifacthub.io/packages/helm/datawire/ambassador
+  - name: edge-stack
+    namespace: ambassador
+    createNamespace: true
+    chart: datawire/edge-stack
+    devel: true
+    
   # https://artifacthub.io/packages/helm/k8s-dashboard/kubernetes-dashboard
   - name: kubernetes-dashboard
     namespace: kubernetes-dashboard
