@@ -138,3 +138,12 @@ releases:
       - configs.secret.githubSecret: {{ env "ARGO_GITHUB_SECRET" | default "" }}
       - configs.secret.bitbucketSecret: {{ env "ARGO_BITBUCKET_SECRET" | default "" }}
       - configs.secret.gitlabSecret: {{ env "ARGO_GITLAB_SECRET" | default "" }}
+
+  # https://stackgres.io/doc/latest/install/helm/
+  - name: stackgres-operator
+    namespace: stackgres
+    chart: https://stackgres.io/downloads/stackgres-k8s/stackgres/latest/helm/stackgres-operator.tgz
+    values:
+      - adminui.service.type: LoadBalancer
+      - grafana.autoEmbed: false
+      - adminui.service.type: LoadBalancer

@@ -1,0 +1,55 @@
+apiVersion: stackgres.io/v1
+kind: SGInstanceProfile
+metadata:
+  name: size-xxs
+spec:
+  cpu: "100m"
+  memory: "256Mi"
+---
+apiVersion: stackgres.io/v1
+kind: SGInstanceProfile
+metadata:
+  name: size-xs
+spec:
+  cpu: "500m"
+  memory: "512Mi"
+---
+apiVersion: stackgres.io/v1
+kind: SGInstanceProfile
+metadata:
+  name: size-s
+spec:
+  cpu: "1"
+  memory: "2Gi"
+---
+apiVersion: stackgres.io/v1
+kind: SGInstanceProfile
+metadata:
+  name: size-m
+spec:
+  cpu: "2"
+  memory: "4Gi"
+---
+apiVersion: stackgres.io/v1
+kind: SGInstanceProfile
+metadata:
+  name: size-l
+spec:
+  cpu: "4"
+  memory: "8Gi"
+---
+apiVersion: stackgres.io/v1
+kind: SGInstanceProfile
+metadata:
+  name: size-xl
+spec:
+  cpu: "6"
+  memory: "16Gi"
+---
+apiVersion: stackgres.io/v1
+kind: SGInstanceProfile
+metadata:
+  name: size-xxl
+spec:
+  cpu: "8"
+  memory: "32Gi"
