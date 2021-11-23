@@ -121,3 +121,6 @@ proxy-dashboard:
 proxy-argo:
 	echo "Open at https://localhost:8080"
 	kubectl port-forw
+
+proxy-grafana: 
+	kubectl port-forward -n monitoring-logs-trace-stack  kube-prometheus-stack-grafana-7df49b8657-wfrdn 8081:3000
